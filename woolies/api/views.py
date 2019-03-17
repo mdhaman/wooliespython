@@ -1,10 +1,13 @@
 import flask
 import functools
 import json
+import time
+from datetime import datetime
 from copy import deepcopy
 from enum import Enum
 from woolies.api import blueprint
 from flask import current_app, jsonify, abort, make_response
+
 
 class SortOtpions(Enum):
     High = 'High'
@@ -15,7 +18,7 @@ class SortOtpions(Enum):
 
 @blueprint.route('/answers/user', methods=['GET'])
 def user():
-    return jsonify({'token': current_app.config.get('TOKEN'), 'user': 'Mayur Dhamanwala'})
+    return jsonify({'token': current_app.config.get('TOKEN'), 'name': 'Mayur Dhamanwala'})
 
 
 @blueprint.route('/answers/sort', methods=['GET'])
@@ -61,29 +64,28 @@ def sort():
 
         return jsonify(sorted(products, key=functools.cmp_to_key(compare)))
 
-@blueprint.route('/answers/TrolleyTotal', methods=['GET', 'POST'])
+@blueprint.route('/answers/trolleyTotal', methods=['GET', 'POST'])
 def trolley():
-    trolley = flask.request.get_json()
-    product_lookup = {p['name']: p['price'] for p in trolley.get('products', [])}
-    quantity_lookup = {q['name']: q['quantity'] for q in trolley.get('quantities', [])}
-
-    totals = [sum([p['price'] * quantity_lookup.get(p['name'], 0.0) for p in trolley.get('products') or []])]
+    data = flask.request.get_json()
+    product_lookup = {p['Name']: p['Price'] for p in data.get('Products', [])}
+    quantity_lookup = {q['Name']: q['Quantity'] for q in data.get('Quantities', [])}
+    totals = [sum([p['Price'] * quantity_lookup.get(p['Name'], 0.0) for p in data.get('Products') or []])]
 
     def is_valid_quantity(quantities=[], lookup={}):
         for quantity in quantities:
-            if lookup.get(quantity.get('name')) and lookup.get(quantity.get('name')) < quantity.get('quantity'):
+            if not lookup.get(quantity.get('Name')) is None and lookup.get(quantity.get('Name')) < quantity.get('Quantity'):
                 return False
         return True
 
-    for special in trolley.get('specials', []):
-        if is_valid_quantity(special.get('quantities', []), quantity_lookup):
+    for special in data.get('Specials', []):
+        if is_valid_quantity(special.get('Quantities', []), quantity_lookup):
             new_quantity = deepcopy(quantity_lookup)
-            special_quantity = {q['name']: q['quantity'] for q in special.get('quantities', [])}
+            special_quantity = {q['Name']: q['Quantity'] for q in special.get('Quantities', [])}
             count = 0
-            while(is_valid_quantity(special.get('quantities', []), new_quantity)):
+            while(is_valid_quantity(special.get('Quantities', []), new_quantity)):
                 count += 1
                 for name, quantity in special_quantity.items():
                     new_quantity[name] = new_quantity[name] - quantity
-            
-            totals.append(count * special.get('total') + sum(new_quantity[name] * product_lookup[name] for name in new_quantity.keys()))
+
+            totals.append((count * special.get('Total')) + sum([(new_quantity[key] * product_lookup[key]) for key in new_quantity.keys()]))
     return make_response(jsonify(min(totals)), 200)
