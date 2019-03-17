@@ -7,7 +7,7 @@
     <ProjectGuid>d15ef15e-68af-4e72-b76d-f89364a44923</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <ProjectTypeGuids>{789894c7-04a9-4a11-a6b5-3f4435165112};{1b580a1a-fdb3-4b32-83e1-6407eb2722e6};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
-    <StartupFile>runserver.py</StartupFile>
+    <StartupFile>manager.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -18,6 +18,8 @@
     <Name>WooliesPython</Name>
     <RootNamespace>WooliesPython</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <IsWindowsApplication>False</IsWindowsApplication>
+    <CommandLineArguments>runserver</CommandLineArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,46 +30,35 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="runserver.py" />
-    <Compile Include="WooliesPython\__init__.py" />
-    <Compile Include="WooliesPython\views.py" />
+    <Compile Include="application.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="manager.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="woolies\default_settings.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="woolies\flaskapp.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="woolies\api\views.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="woolies\api\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="woolies\woolies_api_client.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="woolies\__init__.py" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="WooliesPython\" />
-    <Folder Include="WooliesPython\static\" />
-    <Folder Include="WooliesPython\static\content\" />
-    <Folder Include="WooliesPython\static\fonts\" />
-    <Folder Include="WooliesPython\static\scripts\" />
-    <Folder Include="WooliesPython\templates\" />
+    <Folder Include="woolies\" />
+    <Folder Include="woolies\api\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
-    <Content Include="WooliesPython\static\content\bootstrap.css" />
-    <Content Include="WooliesPython\static\content\bootstrap.min.css" />
-    <Content Include="WooliesPython\static\content\site.css" />
-    <Content Include="WooliesPython\static\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="WooliesPython\static\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="WooliesPython\static\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="WooliesPython\static\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="WooliesPython\static\scripts\bootstrap.js" />
-    <Content Include="WooliesPython\static\scripts\bootstrap.min.js" />
-    <Content Include="WooliesPython\static\scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="WooliesPython\static\scripts\jquery-1.10.2.js" />
-    <Content Include="WooliesPython\static\scripts\jquery-1.10.2.min.js" />
-    <Content Include="WooliesPython\static\scripts\jquery-1.10.2.min.map" />
-    <Content Include="WooliesPython\static\scripts\jquery.validate-vsdoc.js" />
-    <Content Include="WooliesPython\static\scripts\jquery.validate.js" />
-    <Content Include="WooliesPython\static\scripts\jquery.validate.min.js" />
-    <Content Include="WooliesPython\static\scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="WooliesPython\static\scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="WooliesPython\static\scripts\modernizr-2.6.2.js" />
-    <Content Include="WooliesPython\static\scripts\respond.js" />
-    <Content Include="WooliesPython\static\scripts\respond.min.js" />
-    <Content Include="WooliesPython\static\scripts\_references.js" />
-    <Content Include="WooliesPython\templates\about.html" />
-    <Content Include="WooliesPython\templates\contact.html" />
-    <Content Include="WooliesPython\templates\index.html" />
-    <Content Include="WooliesPython\templates\layout.html" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

@@ -1,0 +1,1 @@
+from woolies.flaskapp import create_app
